@@ -1,3 +1,6 @@
+import sys
+
+
 class Node:
     def __init__(self):
         self.leaves = []
@@ -38,5 +41,16 @@ class MemoryManeuver:
 
 
 if __name__ == "__main__":
-    mm = MemoryManeuver("2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2")
-    print(mm.tree.node_sum)
+    if len(sys.argv) > 1:
+        try:
+            mm = MemoryManeuver(sys.argv[1])
+            print("Your result is {}".format(mm.tree.node_sum))
+        except (ValueError, IndexError):
+            print("You did something wrong there when writing the input data.")
+    else:
+        test_input = input()
+        if not test_input:
+            print("You haven't entered any input. The test input is going to run.")
+            test_input = "2 3 0 3 10 11 12 1 1 0 1 99 2 1 1 2"
+        mm = MemoryManeuver(test_input)
+        print("For the test input [{}] the result is {}".format(test_input, mm.tree.node_sum))
