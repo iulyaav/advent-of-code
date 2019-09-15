@@ -8,6 +8,15 @@ class Node:
 
 
 class MemoryManeuver:
+    """
+    Given a tree-like structure of the form
+    CHILDREN--METADATA-CHILD_NODES-[METADATA_ENTRIES...]
+    this class tries to recreate the tree-structure and
+    it also computes the value of the node as follows
+
+    - if a node has no child nodes, its value is the sum of its metadata entries
+    - if a node does have child nodes, the metadata entries become indexes which refer to those child nodes
+    """
 
     def __init__(self, input_data):
         self.tree_data = [int(number) for number in input_data.split(' ')]
@@ -15,6 +24,8 @@ class MemoryManeuver:
         self.solve()
 
     def solve(self):
+        """Recreate the tree structure recursively."""
+
         def _parse(current_index):
             children = self.tree_data[current_index]
             child_index = current_index + 2

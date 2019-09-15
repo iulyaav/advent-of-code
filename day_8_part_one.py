@@ -2,6 +2,12 @@ import sys
 
 
 class MemoryManeuver:
+    """
+    Given a tree-like structure of the form
+    CHILDREN--METADATA-CHILD_NODES-[METADATA_ENTRIES...]
+    this class holds information about the sum of all the
+    metadata entries.
+    """
 
     def __init__(self, input_data):
         self.tree_data = [int(number) for number in input_data.split(' ')]
@@ -9,6 +15,11 @@ class MemoryManeuver:
         self.solve()
 
     def solve(self):
+        """Recursively add all the metadata entries to the
+        total sum of the tree structure. The recursive method
+        is nested in order to prevent overriding the sum by
+        running the solve function multiple times."""
+
         def _parse (current_index):
             children = self.tree_data[current_index]
             child_index = current_index + 2
