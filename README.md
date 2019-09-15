@@ -34,3 +34,8 @@ Specifically, a node consists of:
 
 Each child node is itself a node that has its own header, child nodes, and metadata.
 ```
+
+Part one: What is the sum of all metadata entries?
+
+
+Part two: What is the value of the root node?
