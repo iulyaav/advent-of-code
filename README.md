@@ -13,7 +13,7 @@ requirements file, but this is not excluded in the future. In this case, a new s
 
 2. You can provide input either py piping a file or by writing it by hand. In the later case, please add quotes around
 the example.
-    * `puython day_8.py < input_file.txt`
+    * `python day_8.py < input_file.txt`
     * `python day_8.py "This is my input"`
     
 
