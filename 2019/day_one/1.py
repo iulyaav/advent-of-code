@@ -5,7 +5,9 @@ def fuel_counter_upper(input_file_name):
     with open(input_file_name) as f:
         for line in f:
             mass = int(line)
-            total += mass // 3 - 2
+            while mass:
+                mass = max(0, mass // 3 - 2)
+                total += mass
     
     return total
 
