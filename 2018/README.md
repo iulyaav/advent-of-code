@@ -45,5 +45,3 @@ Each child node is itself a node that has its own header, child nodes, and metad
 ata.
 ```
 
-Part one: What is the sum of all metadata entries?
-
