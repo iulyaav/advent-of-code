@@ -2,10 +2,7 @@ import sys
 import collections
 
 def not_more_than_two(number):
-    for v in collections.Counter(number).values():
-        if v > 2:
-            return False
-    return True
+    return 2 in collections.Counter(number).values()
 
 def has_double_digits(number):
     for v in collections.Counter(number).values():
@@ -20,7 +17,7 @@ def find_number(start, out, n, numbers=None):
 
     if n == 0:
         first_digit = out[0]
-        if has_double_digits(out):
+        if not_more_than_two(out):
             numbers.append(int(out))
         return
     
