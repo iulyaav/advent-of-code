@@ -1,30 +1,32 @@
 import sys
 
+from collections import defaultdict
+
+def print_message(data):
+    for row in data:
+        print("".join(["*" if x == "0" else " " for x in row]))
 
 def layers(data, width, height):
     layers = {}
     n = len(data)
     start = 0
-    layers_metadata = {}
 
-    max_layer = {
-        'index': None,
-        'amount': 10 ** 9
-    }
+    top_layer = []
+    for i in range(height):
+        top_layer.append([])
+        for j in range(width):
+            top_layer[i].append('2')
 
     for i in range(n // (width * height)):
-        layers[i] = data[start:start + width*height]
-        start += width*height - 1
-        layers_metadata[i] = {
-            '0': layers[i].count('0'),
-            '1': layers[i].count('1'),
-            '2': layers[i].count('2'),
-        }
-        if layers_metadata[i]['0'] < max_layer['amount']:
-            max_layer['amount'] = layers_metadata[i]['0']
-            max_layer['index'] = i
+        # these are layers
+        for j in range(height):
+            for k in range(width):
+                if top_layer[j][k] == '2' and data[start+k] != '2':
+                    top_layer[j][k] = data[start+k]
+            start += width
+        
     
-    print(layers_metadata[max_layer['index']]['1'] * layers_metadata[max_layer['index']]['2'])
+    print_message(top_layer)
 
 if __name__ == "__main__":
     file_name = sys.argv[1]
