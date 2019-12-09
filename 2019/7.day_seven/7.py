@@ -1,23 +1,36 @@
 import sys
-from intcode import Intcode
+from collections import defaultdict
+from intcode import Intcode, NeedMoreInfoException
 from itertools import permutations
 
-def amplifier(program, setting=None, signal=None):
-    program.run(amplifiers=[setting, signal])
+def amplifier(program, amplifiers=None):
+    program.run(amplifiers=amplifiers)
     return program.output
 
 def run_amplifiers(file_data):
     
-    combinations = list(permutations(range(5)))
+    combinations = list(permutations(range(5, 10)))
     maximum = 0
     winning_combo = None
 
     for combination in combinations:
         signal = 0
-        for step in combination:
+        visited = list(combination)
+        amplifier_outputs = defaultdict(list)
+        while visited:
+            step = visited.pop(0)
             intcode = Intcode(file_data)
-            signal = amplifier(intcode, setting=step, signal=signal)
-    
+            try:
+                if not amplifier_outputs[step]:
+                    amplifier_outputs[step].append(0)
+                outputs = amplifier_outputs[step]
+                signal = amplifier(intcode, amplifiers=[step] + outputs)
+                if visited:
+                    amplifier_outputs[visited[0]].append(signal)
+            except NeedMoreInfoException:
+                amplifier_outputs[visited[0]].append(intcode.output)
+                visited.append(step)
+
         if signal > maximum:
             maximum = signal
             winning_combo = combination

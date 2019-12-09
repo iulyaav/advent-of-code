@@ -1,6 +1,9 @@
 import sys
 import time
 
+class NeedMoreInfoException(Exception):
+    def __init__(self):
+        self.message = "Need more input values"
 
 class Intcode:
 
@@ -18,7 +21,8 @@ class Intcode:
 
     def read(self, index, param, input_value=None):
         if input_value is None:
-            input_value = int(input("Give me an input value: "))
+            # input_value = int(input("Give me an input value: "))
+            raise NeedMoreInfoException
         self.data[param] = input_value
         return index + 2
 
@@ -61,7 +65,6 @@ class Intcode:
         }
 
         for i in range(steps):
-            # print(self.data[parameter_instructions[mode[-1 - i]](start+i)])
             yield parameter_instructions[mode[-1 - i]](start+i)
 
     def run(self, noun=None, verb=None, amplifiers=None):
@@ -95,15 +98,11 @@ class Intcode:
             if len(instructions) < 3:
                 instructions = "0" * (3 - len(instructions)) + instructions
         
-            try:
-                if opcode == 3:
-                    amplifier = amplifiers.pop(0) if amplifiers else None
-                    index = operations[opcode](index, amplifier)
-                else:
-                    index = operations[opcode](index)
-            except Exception as e:
-                print("Something went wrong at index {} because: {}".format(index, e))
-                break
+            if opcode == 3:
+                amplifier = amplifiers.pop(0) if amplifiers else None
+                index = operations[opcode](index, amplifier)
+            else:
+                index = operations[opcode](index)
 
         return
 
