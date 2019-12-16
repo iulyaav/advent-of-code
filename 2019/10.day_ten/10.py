@@ -1,5 +1,5 @@
 import sys
-from math import gcd
+from math import gcd, atan2, pi
 
 def read_map(data):
     row = len(data)
@@ -11,7 +11,7 @@ def read_map(data):
     for i in range(row):
         for j in range(col):
             if data[i][j] == "#":
-                asteroids[(i, j)] = total_a - 1
+                asteroids[(j, i)] = [total_a - 1]
     
     return asteroids
 
@@ -30,10 +30,23 @@ def compute_visibility(asteroids):
             y = y // g
             if (x, y) not in lines:
                 lines.add((x, y))
+                asteroids[a].append((compute_angle(a, b), (x, y), b))
             else:
-                asteroids[a] -= 1
+                asteroids[a][0] -= 1
     
-    return max(asteroids.values())
+    max_value = max([x [0] for x in asteroids.values()])
+    max_point = [x for x in asteroids.keys() if asteroids[x][0] == max_value][0]
+    return max_value, max_point
+
+
+def compute_angle(a, b):
+    return atan2(b[0] - a[0], a[1] - b[1]) % (2 * pi)
+
+def rotation(asteroids, focus):
+    lines = asteroids[focus][1:]
+    sorted_list = sorted(lines, key=lambda x: (x[0]))
+    the_200th = sorted_list[199]
+    print(the_200th[2][0] * 100 + the_200th[2][1])
 
 
 if __name__ == "__main__":
@@ -43,4 +56,6 @@ if __name__ == "__main__":
         data = f.read().split('\n')
 
     a = read_map(data)
-    print(compute_visibility(a))
+    v, p = compute_visibility(a)
+    print(v, p)
+    rotation(a, p)
