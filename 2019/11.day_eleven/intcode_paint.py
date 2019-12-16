@@ -20,6 +20,7 @@ class Intcode:
         self.relative_base = 0
         self.white_tiles = set()
         self.current_position = (0, 0)
+        self.white_tiles.add(self.current_position)
         self.instructions = []
         self.direction = "UP"
         self.directions = ["UP", "RIGHT", "DOWN", "LEFT"]
