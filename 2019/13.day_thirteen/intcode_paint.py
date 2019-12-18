@@ -20,11 +20,28 @@ class Intcode:
         self.relative_base = 0
         self.instructions = []
         self.instruction = []
+        self.data[0] = 2
+        self.joystick = None
+        self.blocks = set()
+        self.ball = None
+        self.paddle = None
+        self.walls = set()
 
-    def paint_and_move(self):
+    def read_instruction(self):
         if len(self.instruction) == 3:
             x, y, tile = self.instruction
-            self.instructions.append([x, y, tile])
+            if tile == 2:
+                self.blocks.add((x, y))
+            elif tile == 4:
+                self.ball = (x, y)
+            elif tile == 3:
+                self.paddle = (x, y)
+            elif tile == 1:
+                self.walls.add((x, y))
+            elif x == -1 and y == 0 and tile not in range(5):
+                self.score = tile
+            else:
+                self.instructions.append([x, y, tile])
             self.instruction = []
 
     def addition(self, index, param_1, param_2, param_3):
@@ -37,20 +54,19 @@ class Intcode:
 
     def read(self, index, param, input_value=None):
         if input_value is None:
-            # input_value = int(input("Give me an input value: "))
-            # raise NeedMoreInfoException
-            if self.current_position in self.white_tiles:
+            if self.ball[0] > self.paddle[0]: 
                 input_value = 1
-            else:
+            elif self.ball[0] < self.paddle[0]: 
+                input_value = -1
+            else: 
                 input_value = 0
         self.data[param] = input_value
         return index + 2
 
     def write(self, index, param):
         self.output = self.data[param]
-        # print("OUTPUT at index {} with param={}: {}".format(index, param, self.output))
         self.instruction.append(self.output)
-        self.paint_and_move()
+        self.read_instruction()
         return index + 2
 
     def jump_if_true(self, index, param_1, param_2):
@@ -136,6 +152,6 @@ class Intcode:
                 index = operations[opcode](index, amplifier)
             else:
                 index = operations[opcode](index)
-
+            
         return
 

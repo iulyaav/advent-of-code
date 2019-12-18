@@ -10,4 +10,4 @@ if __name__ == "__main__":
     
     intcode = Intcode(file_data)
     intcode.run()
-    print(sum([1 for x in intcode.instructions if x[2] == 2]))
+    print(intcode.score)
