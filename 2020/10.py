@@ -21,9 +21,15 @@ def reach_the_end(numbers, current, target):
 
 def ten_b():
     with open("input_10.txt", "r") as f:
-        bag = set(sorted([int(x) for x in f.read().split('\n')]))
-        current = 0
+        bag = sorted([int(x) for x in f.read().split('\n')], reverse=True)
+        bag.append(0)
+        start = bag[0] + 3
+        total = {start: 1}
+        for item in bag:
+            total[item] = 0
+            for i in range(1, 4):
+                if item + i in total:
+                    total[item] += total[item+i]
+        return total[0]
  
-        
-
-print(ten_a())
+print(ten_b())
