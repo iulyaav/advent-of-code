@@ -1,8 +1,4 @@
 
-
-
-
-
 def main(arg: str, data: str):
     
     scores = {

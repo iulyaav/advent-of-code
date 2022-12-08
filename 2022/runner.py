@@ -16,4 +16,5 @@ if __name__ == "__main__":
         main(file_arg, read_data(day, file_arg))
 
     except IndexError as exc:
+        print(exc)
         raise SystemExit(f"Which day should we run? Write in numbers")
